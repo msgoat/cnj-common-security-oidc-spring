@@ -1,0 +1,5 @@
+pipeline:
+  commit-stage:
+    image: docker.at.automotive.msg.team/cloudtrain/cnj-drone-mvn-k8s
+    commands:
+      - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false -DskipTests=true
