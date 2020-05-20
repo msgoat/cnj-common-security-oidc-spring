@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-05-20
+### Added
+### Changed
+- moved to new toolchain based on GitHub and AWS.
+- upgraded to Spring Boot 2.3.0
+
 ## [1.0.0] - 2020-02-27
 ### Added
 - first revision with minimum OpenID Connect support.

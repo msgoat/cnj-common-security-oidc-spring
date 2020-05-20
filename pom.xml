@@ -12,7 +12,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- runtime related properties -->
         <java.version>11</java.version>
-        <spring.boot.version>2.2.4.RELEASE</spring.boot.version>
+        <spring.boot.version>2.3.0.RELEASE</spring.boot.version>
         <!-- common logging dependencies -->
         <slf4j.version>1.7.30</slf4j.version>
         <!-- common test dependencies -->
@@ -32,7 +32,7 @@
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
         <!-- new Maven version management -->
-        <revision>1.0.0</revision>
+        <revision>1.1.0</revision>
         <sha1></sha1>
         <changelist></changelist>
     </properties>
@@ -234,7 +234,7 @@
         <repository>
             <id>at41-maven-repository</id>
             <name>msg Automotive AT Maven Releases Repository</name>
-            <url>https://nexus.at.automotive.msg.team/repository/msgoat-maven-releases/</url>
+            <url>https://nexus.at41tools.k8s.aws.msgoat.eu/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 </project>
