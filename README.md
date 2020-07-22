@@ -9,7 +9,7 @@ This common library has been introduced to avoid the usage of a vendor specific 
 
 ## Release information
 
-Latest version is: `1.1.0`.
+Latest version is: `1.2.0`.
 
 A changelog can be found in [changelog.md](changelog.md).
 

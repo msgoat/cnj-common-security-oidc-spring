@@ -3,6 +3,7 @@ package group.msg.at.cloud.common.security.config;
 import group.msg.at.cloud.common.security.oidc.CompositeJwtGrantedAuthoritiesConverter;
 import group.msg.at.cloud.common.security.oidc.IdTokenGrantedAuthoritiesConverter;
 import group.msg.at.cloud.common.security.oidc.OidcMappedJwtClaimSetConverter;
+import group.msg.at.cloud.common.security.oidc.client.JwtPropagatingRestTemplateCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +24,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
  * </p>
  *
  * @author michael.theis@msg.group
- * @version 1.0
+ * @version 1.1
  * @since 1.0.0
  */
 public abstract class AbstractOidcResourceServerConfiguration extends WebSecurityConfigurerAdapter {
@@ -55,4 +56,12 @@ public abstract class AbstractOidcResourceServerConfiguration extends WebSecurit
      */
     @Override
     protected abstract void configure(HttpSecurity http) throws Exception;
+
+    /**
+     * Exposes a {@code RestTemplateCustomizer} to add JWT propagation to all {@code RestTemplates}.
+     */
+    @Bean
+    public JwtPropagatingRestTemplateCustomizer jwtPropagatingRestTemplateCustomizer() {
+        return new JwtPropagatingRestTemplateCustomizer();
+    }
 }
