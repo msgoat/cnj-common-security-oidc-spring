@@ -1,0 +1,40 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    DOCKERHUB_USER: "cloudtrain-codebuild-dockerhub:docker-user"
+    DOCKERHUB_PAT: "cloudtrain-codebuild-dockerhub:docker-pat"
+
+phases:
+  install:
+    on-failure: ABORT
+    commands:
+      - echo "Install helm"
+      - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+      - chmod 700 get_helm.sh
+      - ./get_helm.sh
+      - helm version
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - echo "Running phase pre_build"
+      - echo "Download common configuration files"
+      - aws s3 cp s3://s3-eu-west-1-cloudtrain-codebuild-shared/.mvn/settings.xml /root/.m2/settings.xml
+      - echo "Authenticate on DockerHub"
+      - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PAT
+      - echo "Authenticate on EKS"
+      - aws eks update-kubeconfig --name $CLOUDTRAIN_EKS_CLUSTER_NAME --role $CLOUDTRAIN_EKS_ROLE_ARN
+      - kubectl cluster-info
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "Running phase build"
+      - echo Running commit-stage of the build
+      - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false -DskipTests=true
+  post_build:
+    commands:
+      - echo "Running phase post_build"
+
+cache:
+  paths:
+    - "/root/.m2/**/*"
