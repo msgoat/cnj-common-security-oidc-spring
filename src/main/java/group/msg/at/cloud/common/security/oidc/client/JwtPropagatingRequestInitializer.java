@@ -11,8 +11,6 @@ import org.springframework.security.oauth2.core.AbstractOAuth2Token;
  * {@code ClientHttpRequestInitializer} that propagates existing JWT tokens to downstream services.
  *
  * @author Michael Theis (msg)
- * @version 1.0
- * @since 1.2.0
  */
 public class JwtPropagatingRequestInitializer implements ClientHttpRequestInitializer {
 
@@ -20,12 +18,13 @@ public class JwtPropagatingRequestInitializer implements ClientHttpRequestInitia
     public void initialize(ClientHttpRequest request) {
         if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth.isAuthenticated()) {
-                Object credentials = auth.getCredentials();
-                if (credentials != null && AbstractOAuth2Token.class.isAssignableFrom(credentials.getClass())) {
-                    AbstractOAuth2Token jwt = (AbstractOAuth2Token) credentials;
-                    request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue());
-                }
+            Object credentials = null;
+            if (auth != null) {
+                credentials = auth.getCredentials();
+            }
+            if (credentials != null && AbstractOAuth2Token.class.isAssignableFrom(credentials.getClass())) {
+                AbstractOAuth2Token jwt = (AbstractOAuth2Token) credentials;
+                request.getHeaders().setBearerAuth(jwt.getTokenValue());
             }
         }
     }
