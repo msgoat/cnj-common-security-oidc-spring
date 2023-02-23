@@ -1,4 +1,4 @@
-package group.msg.at.cloud.common.security.oidc;
+package group.msg.at.cloud.common.security.oidc.resource.server;
 
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @version 1.0
  * @since 1.0.0
  */
-public class OidcMappedJwtClaimSetConverter implements Converter<Map<String, Object>, Map<String, Object>> {
+final class OidcMappedJwtClaimSetConverter implements Converter<Map<String, Object>, Map<String, Object>> {
     private final static ConversionService CONVERSION_SERVICE = ClaimConversionService.getSharedInstance();
     private final static TypeDescriptor OBJECT_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(Object.class);
     private final static TypeDescriptor STRING_TYPE_DESCRIPTOR = TypeDescriptor.valueOf(String.class);

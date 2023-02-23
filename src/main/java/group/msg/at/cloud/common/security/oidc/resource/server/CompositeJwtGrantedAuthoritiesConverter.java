@@ -1,6 +1,5 @@
-package group.msg.at.cloud.common.security.oidc;
+package group.msg.at.cloud.common.security.oidc.resource.server;
 
-import com.sun.istack.NotNull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -14,9 +13,8 @@ import java.util.*;
  * </p>
  *
  * @author michael.theis@msg.group
- * @since 1.0.0
  */
-public final class CompositeJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+final class CompositeJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     private final List<Converter<Jwt, Collection<GrantedAuthority>>> converters;
 
@@ -32,7 +30,7 @@ public final class CompositeJwtGrantedAuthoritiesConverter implements Converter<
      * @return collection of granted authorities without duplicates; may be empty but never {@code null}
      */
     @Override
-    public Collection<GrantedAuthority> convert(@NotNull Jwt jwt) {
+    public Collection<GrantedAuthority> convert(Jwt jwt) {
         Objects.requireNonNull(jwt, "missing required parameter \"jwt\"");
         Set<GrantedAuthority> result = new LinkedHashSet<>();
         this.converters.forEach(converter -> result.addAll(converter.convert(jwt)));

@@ -1,4 +1,4 @@
-package group.msg.at.cloud.common.security.oidc;
+package group.msg.at.cloud.common.security.oidc.resource.server;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,22 +7,21 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * OpenID Connect specific JWT granted authorities converter, which extracts the users roles passed in claim {@code groups}
  * from the given OpenID Connect ID token.
  *
  * @author michael.theis@msg.group
- * @since 1.0.0
  */
-public final class IdTokenGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+final class IdTokenGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     private static final String DEFAULT_AUTHORITY_PREFIX = "ROLE_";
 
     private static final Collection<String> WELL_KNOWN_AUTHORITIES_CLAIM_NAMES =
-            Arrays.asList("groups");
+            List.of("groups");
 
     private String authorityPrefix = DEFAULT_AUTHORITY_PREFIX;
 
@@ -69,7 +68,7 @@ public final class IdTokenGrantedAuthoritiesConverter implements Converter<Jwt, 
         }
 
         for (String claimName : WELL_KNOWN_AUTHORITIES_CLAIM_NAMES) {
-            if (jwt.containsClaim(claimName)) {
+            if (jwt.getClaims().containsKey(claimName)) {
                 return claimName;
             }
         }

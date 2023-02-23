@@ -8,15 +8,20 @@
     <packaging>jar</packaging>
     <name>Common classes for OpenID Connect security in Spring Boot applications</name>
     <properties>
+        <!-- new Maven version management -->
+        <revision>2.0.0</revision>
+        <sha1></sha1>
+        <changelist></changelist>
+        <!-- common Maven properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- runtime related properties -->
-        <java.version>11</java.version>
-        <spring.boot.version>2.3.1.RELEASE</spring.boot.version>
+        <java.version>17</java.version>
+        <spring.boot.version>3.0.2</spring.boot.version>
         <!-- common logging dependencies -->
-        <slf4j.version>1.7.30</slf4j.version>
+        <slf4j.version>1.7.32</slf4j.version>
         <!-- common test dependencies -->
-        <junit.version>5.6.0</junit.version>
+        <junit.version>5.9.2</junit.version>
         <!-- pinning versions of common maven plugins -->
         <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -31,10 +36,6 @@
         <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
         <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
-        <!-- new Maven version management -->
-        <revision>1.2.0</revision>
-        <sha1></sha1>
-        <changelist></changelist>
     </properties>
     <dependencyManagement>
         <dependencies>

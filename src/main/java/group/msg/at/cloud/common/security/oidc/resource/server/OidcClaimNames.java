@@ -1,16 +1,12 @@
-package group.msg.at.cloud.common.security.oidc;
-
-import org.springframework.security.oauth2.jwt.JwtClaimNames;
+package group.msg.at.cloud.common.security.oidc.resource.server;
 
 /**
- * Extends {@link JwtClaimNames} with standard OpenID Connect Standard claims.
+ * Defines OpenID Connect Standard claims.
  *
  * @author michael.theis@msg.group
- * @version 1.0
  * @see <a target="_blank" href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims" >OpenID Connect Core Spec 1.0</a>
- * @since 1.0.0
  */
-public interface OidcClaimNames extends JwtClaimNames {
+interface OidcClaimNames {
 
     /**
      * {@code name} - (string) End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences
