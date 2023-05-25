@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  secrets-manager:
+    NEXUS_USER: "cloudtrain-codebuild-nexus:user"
+    NEXUS_PASSWORD: "cloudtrain-codebuild-nexus:password"
+
 phases:
   pre_build:
     on-failure: ABORT
