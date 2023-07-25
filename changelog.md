@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2023-07-25
+### Changed
+- upgraded SL4J to 2.0.6
+- upgraded to Spring Boot 3
+
 ## [2.0.0] - 2023-02-23
 ### Changed
 - upgraded to Java 17

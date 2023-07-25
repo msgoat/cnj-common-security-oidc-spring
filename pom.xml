@@ -9,7 +9,7 @@
     <name>Common classes for OpenID Connect security in Spring Boot applications</name>
     <properties>
         <!-- new Maven version management -->
-        <revision>2.0.0</revision>
+        <revision>2.1.0</revision>
         <sha1></sha1>
         <changelist></changelist>
         <!-- common Maven properties -->
@@ -17,9 +17,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- runtime related properties -->
         <java.version>17</java.version>
-        <spring.boot.version>3.0.2</spring.boot.version>
+        <spring.boot.version>3.1.0</spring.boot.version>
         <!-- common logging dependencies -->
-        <slf4j.version>1.7.32</slf4j.version>
+        <slf4j.version>2.0.6</slf4j.version>
         <!-- common test dependencies -->
         <junit.version>5.9.2</junit.version>
         <!-- pinning versions of common maven plugins -->
@@ -238,4 +238,30 @@
             <url>https://nexus.cloudtrain.aws.msgoat.eu/repository/cloudtrain-releases/</url>
         </repository>
     </distributionManagement>
+    <pluginRepositories>
+        <pluginRepository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <id>cloudtrain-maven-repository</id>
+            <name>msg Automotive CloudTrain Releases Repository</name>
+            <url>https://nexus.cloudtrain.aws.msgoat.eu/repository/cloudtrain-releases/</url>
+            <layout>default</layout>
+        </pluginRepository>
+    </pluginRepositories>
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <id>cloudtrain-maven-repository</id>
+            <name>msg Automotive CloudTrain Releases Repository</name>
+            <url>https://nexus.cloudtrain.aws.msgoat.eu/repository/cloudtrain-releases/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 </project>
