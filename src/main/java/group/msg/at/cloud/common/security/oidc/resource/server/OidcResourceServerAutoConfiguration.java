@@ -1,6 +1,7 @@
 package group.msg.at.cloud.common.security.oidc.resource.server;
 
 import group.msg.at.cloud.common.security.oidc.client.JwtPropagatingRestTemplateCustomizer;
+import group.msg.at.cloud.common.security.oidc.client.JwtPropagatingWebClientCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,9 +18,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 /**
  * Abstract base class for all Spring Security OpenID Connect web security configuration bean in Spring Boot
  * Applications.
- * <p>
- * Concrete implementations must extend this class and add an {@code @EnableWebSecurity} annotation on type level.
- * </p>
  *
  * @author michael.theis@msg.group
  */
@@ -63,5 +61,11 @@ public class OidcResourceServerAutoConfiguration {
     WebSecurityCustomizer webSecurityCustomizer() {
         logger.info("*** CONFIG *** Adding JwtWebSecurityCustomizer to application context");
         return new JwtWebSecurityCustomizer(jwtAuthenticationConverter());
+    }
+
+    @Bean
+    JwtPropagatingWebClientCustomizer jwtPropagatingWebClientCustomizer() {
+        logger.info("*** CONFIG *** Adding JwtPropagatingWebClientCustomizer to application context");
+        return new JwtPropagatingWebClientCustomizer();
     }
 }

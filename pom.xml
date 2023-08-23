@@ -6,10 +6,10 @@
     <artifactId>cnj-common-security-oidc-spring</artifactId>
     <version>${revision}${changelist}${sha1}</version>
     <packaging>jar</packaging>
-    <name>Common classes for OpenID Connect security in Spring Boot applications</name>
+    <description>Common classes for OpenID Connect security in Spring Boot applications</description>
     <properties>
         <!-- new Maven version management -->
-        <revision>2.1.0</revision>
+        <revision>2.2.0</revision>
         <sha1></sha1>
         <changelist></changelist>
         <!-- common Maven properties -->
@@ -77,6 +77,10 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -115,6 +119,11 @@
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                         <parameters>true</parameters>
+                        <showDeprecation>true</showDeprecation>
+                        <showWarnings>true</showWarnings>
+                        <compilerArgs>
+                            <arg>-Xlint</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
