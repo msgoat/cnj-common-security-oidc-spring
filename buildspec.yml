@@ -4,8 +4,13 @@ env:
   secrets-manager:
     NEXUS_USER: "cloudtrain-codebuild-nexus:user"
     NEXUS_PASSWORD: "cloudtrain-codebuild-nexus:password"
+    HARBOR_USER: "cloudtrain-codebuild-harbor:user"
+    HARBOR_PASSWORD: "cloudtrain-codebuild-harbor:token"
+    SONARQUBE_TOKEN: "cloudtrain-codebuild-sonarqube:token"
 
 phases:
+  install:
+    on-failure: ABORT
   pre_build:
     on-failure: ABORT
     commands:
@@ -17,7 +22,7 @@ phases:
     commands:
       - echo "Running phase build"
       - echo Running commit-stage of the build
-      - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false -DskipTests=true
+      - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false -DskipTests=true -Dsonar.login=$SONARQUBE_TOKEN
   post_build:
     commands:
       - echo "Running phase post_build"
@@ -25,3 +30,4 @@ phases:
 cache:
   paths:
     - "/root/.m2/**/*"
+    - "/root/.sonar/cache/**/*"
