@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - removed obsolete dependency on RestAssured which caused problems by adding an unwanted dependency to commons-logging
 - added SonarQube analysis to build pipeline
 - consolidated build configuration
+- removed obsolete WebSecurityCustomizer
 
 ## [2.2.0] - 2023-08-23
 ### Changed
