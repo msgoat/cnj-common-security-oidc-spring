@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
@@ -55,12 +54,6 @@ public class OidcResourceServerAutoConfiguration {
     JwtPropagatingRestTemplateCustomizer jwtPropagatingRestTemplateCustomizer() {
         logger.info("*** CONFIG *** Adding JwtPropagatingRestTemplateCustomizer to application context");
         return new JwtPropagatingRestTemplateCustomizer();
-    }
-
-    @Bean
-    WebSecurityCustomizer webSecurityCustomizer() {
-        logger.info("*** CONFIG *** Adding JwtWebSecurityCustomizer to application context");
-        return new JwtWebSecurityCustomizer(jwtAuthenticationConverter());
     }
 
     @Bean
