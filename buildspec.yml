@@ -43,7 +43,7 @@ phases:
       - export VERSION_SHA1=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}
       - export PROJECT_VERSION=$VERSION_REVISION.$VERSION_CHANGELIST.$VERSION_SHA1
       - echo "Running commit-stage of the build on version [$PROJECT_VERSION]"
-      - mvn clean deploy -f pom.xml -B -ff -e -V -U -Dchangelist=.$VERSION_CHANGELIST -Dsha1=.$VERSION_SHA1 -Dsonar.token=$SONARQUBE_TOKEN -Ddependency-check.skip=$CLOUDTRAIN_CODEBUILD_OWASP_SCAN_SKIPPED
+      - mvn clean deploy -f pom.xml -B -ff -e -V -U -Dsonar.token=$SONARQUBE_TOKEN -Ddependency-check.skip=$CLOUDTRAIN_CODEBUILD_OWASP_SCAN_SKIPPED
       - echo "Tagging branch [$VERSION_CHANGELIST] with git tag [$PROJECT_VERSION] on behalf of CodeBuild initiator [$CODEBUILD_INITIATOR] and GitHub actor [$CODEBUILD_WEBHOOK_ACTOR_ACCOUNT_ID]"
       - git config user.name "$CLOUDTRAIN_CODEBUILD_GIT_TAG_USER"
       - git config user.email "$CLOUDTRAIN_CODEBUILD_GIT_TAG_EMAIL"
