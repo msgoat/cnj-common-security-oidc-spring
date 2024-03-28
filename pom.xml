@@ -9,33 +9,46 @@
     <description>Common classes for OpenID Connect security in Spring Boot applications</description>
     <properties>
         <!-- new Maven version management -->
-        <revision>2.2.0</revision>
+        <revision>3.0.0</revision>
         <sha1></sha1>
         <changelist></changelist>
         <!-- common Maven properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- runtime related properties -->
-        <java.version>17</java.version>
-        <spring.boot.version>3.1.0</spring.boot.version>
+        <java.version>21</java.version>
+        <spring.boot.version>3.2.4</spring.boot.version>
         <!-- common logging dependencies -->
-        <slf4j.version>2.0.6</slf4j.version>
+        <slf4j.version>2.0.11</slf4j.version>
         <!-- common test dependencies -->
-        <junit.version>5.9.2</junit.version>
+        <junit.version>5.10.1</junit.version>
+        <restassured.version>5.4.0</restassured.version>
         <!-- pinning versions of common maven plugins -->
-        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
-        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
-        <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
-        <maven.failsafe.plugin.version>2.22.1</maven.failsafe.plugin.version>
-        <maven.flatten.plugin.version>1.2.1</maven.flatten.plugin.version>
-        <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
-        <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-        <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
-        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
-        <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.clean.plugin.version>3.3.2</maven.clean.plugin.version>
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
+        <maven.deploy.plugin.version>3.1.1</maven.deploy.plugin.version>
+        <maven.docker.plugin.version>0.43.4</maven.docker.plugin.version>
+        <maven.enforcer.plugin.version>3.4.1</maven.enforcer.plugin.version>
+        <maven.failsafe.plugin.version>3.2.1</maven.failsafe.plugin.version>
+        <maven.flatten.plugin.version>1.5.0</maven.flatten.plugin.version>
+        <maven.install.plugin.version>3.1.1</maven.install.plugin.version>
+        <maven.jacoco.plugin.version>0.8.11</maven.jacoco.plugin.version>
+        <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
+        <maven.owasp.plugin.version>9.0.7</maven.owasp.plugin.version>
+        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+        <maven.site.plugin.version>3.12.1</maven.site.plugin.version>
+        <maven.sonar.plugin.version>3.10.0.2594</maven.sonar.plugin.version>
+        <maven.source.plugin.version>3.3.0</maven.source.plugin.version>
+        <maven.surefire.plugin.version>3.2.1</maven.surefire.plugin.version>
+        <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+        <!-- pinning versions of custom maven plugins -->
+        <maven.compose.plugin.version>5.1.0</maven.compose.plugin.version>
+        <maven.helm.plugin.version>5.0.0</maven.helm.plugin.version>
+        <!-- quality assurance properties -->
+        <sonar.host.url>https://sonarqube.cloudtrain.aws.msgoat.eu</sonar.host.url>
+        <jacoco.address>localhost</jacoco.address>
+        <jacoco.port>38089</jacoco.port>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -85,12 +98,9 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -106,6 +116,7 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!-- common maven plugins section -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
@@ -128,6 +139,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven.dependency.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${maven.deploy.plugin.version}</version>
                 </plugin>
@@ -135,6 +151,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${maven.enforcer.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -147,31 +168,45 @@
                     <version>${maven.jar.plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven.site.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven.surefire.plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven.failsafe.plugin.version}</version>
-                </plugin>
-                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${maven.resources.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${maven.source.plugin.version}</version>
                 </plugin>
-                <!-- Flatten Maven plugin adding support of CI friendly version numbers -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>${maven.flatten.plugin.version}</version>
+                </plugin>
+                <!-- quality assurance plugins -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${maven.jacoco.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${maven.sonar.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${maven.owasp.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -234,6 +269,36 @@
                         <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze-dependencies</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nvdApiServerId>nist-nvd</nvdApiServerId>
+                    <formats>HTML,JSON</formats>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze-code</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sonar</goal>
                         </goals>
                     </execution>
                 </executions>

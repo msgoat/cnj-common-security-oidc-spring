@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2024-03-28
+### Added
+- added OWASP dependency check to build pipeline
+- added tagging of git branch on successful build
+### Changed
+- upgraded to Java 21
+- upgraded to Spring Boot 3.2.4
+- upgraded Maven plugin versions
+- upgraded third-party dependency versions
+- removed obsolete dependency on RestAssured which caused problems by adding an unwanted dependency to commons-logging
+- added SonarQube analysis to build pipeline
+- consolidated build configuration
+
 ## [2.2.0] - 2023-08-23
 ### Changed
 - added JWT propagation support for WebClient based REST clients

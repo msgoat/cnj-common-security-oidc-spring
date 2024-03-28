@@ -1,16 +1,31 @@
 version: 0.2
 
 env:
+  variables:
+    CNJ_ARTIFACT_ID: cnj-common-security-oidc-spring
+  parameter-store:
+    CLOUDTRAIN_CODEBUILD_GIT_TAG_USER: "CLOUDTRAIN_CODEBUILD_GIT_TAG_USER"
+    CLOUDTRAIN_CODEBUILD_GIT_TAG_EMAIL: "CLOUDTRAIN_CODEBUILD_GIT_TAG_EMAIL"
+    CLOUDTRAIN_CODEBUILD_OWASP_SCAN_SKIPPED: "CLOUDTRAIN_CODEBUILD_OWASP_SCAN_SKIPPED"
   secrets-manager:
     NEXUS_USER: "cloudtrain-codebuild-nexus:user"
     NEXUS_PASSWORD: "cloudtrain-codebuild-nexus:password"
-    HARBOR_USER: "cloudtrain-codebuild-harbor:user"
-    HARBOR_PASSWORD: "cloudtrain-codebuild-harbor:token"
     SONARQUBE_TOKEN: "cloudtrain-codebuild-sonarqube:token"
+    GITHUB_TOKEN: "cloudtrain-codebuild-github:msgoat_pat"
+    NIST_NVD_API_KEY: "cloudtrain-codebuild-nvd-api-key:apiKey"
 
 phases:
   install:
     on-failure: ABORT
+    commands:
+      - echo "Running phase install"
+      - echo "Download and run common installation script"
+      - aws s3 cp s3://s3-eu-west-1-cloudtrain-codebuild-shared/cloudtrain-codebuild-install.sh ~/
+      - chmod u+x ~/cloudtrain-codebuild-install.sh
+      - ~/cloudtrain-codebuild-install.sh
+      - echo "Install JDK 21"
+      - yum install -y java-21-amazon-corretto-headless
+      - export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto.x86_64
   pre_build:
     on-failure: ABORT
     commands:
@@ -21,8 +36,20 @@ phases:
     on-failure: ABORT
     commands:
       - echo "Running phase build"
-      - echo Running commit-stage of the build
-      - mvn clean deploy --batch-mode --fail-fast --errors -V -U -Dsurefire.useFile=false -DskipTests=true -Dsonar.login=$SONARQUBE_TOKEN
+      - export BRANCH=main
+      - export GIT_BRANCH=${CODEBUILD_WEBHOOK_HEAD_REF:11}
+      - export VERSION_REVISION=$(grep -m 1 '<revision>' pom.xml | cut -d '<' -f2  | cut -d '>' -f2)
+      - export VERSION_CHANGELIST=${GIT_BRANCH:-main}
+      - export VERSION_SHA1=${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}
+      - export PROJECT_VERSION=$VERSION_REVISION.$VERSION_CHANGELIST.$VERSION_SHA1
+      - echo "Running commit-stage of the build on version [$PROJECT_VERSION]"
+      - mvn clean deploy -f pom.xml -B -ff -e -V -U -P commit-stage -Dchangelist=.$VERSION_CHANGELIST -Dsha1=.$VERSION_SHA1 -Dsonar.token=$SONARQUBE_TOKEN -Ddependency-check.skip=$CLOUDTRAIN_CODEBUILD_OWASP_SCAN_SKIPPED
+      - echo "Tagging branch [$VERSION_CHANGELIST] with git tag [$PROJECT_VERSION] on behalf of CodeBuild initiator [$CODEBUILD_INITIATOR] and GitHub actor [$CODEBUILD_WEBHOOK_ACTOR_ACCOUNT_ID]"
+      - git config user.name "$CLOUDTRAIN_CODEBUILD_GIT_TAG_USER"
+      - git config user.email "$CLOUDTRAIN_CODEBUILD_GIT_TAG_EMAIL"
+      - git tag -a $PROJECT_VERSION -m "$CODEBUILD_BUILD_ARN"
+      - git remote set-url origin "https://$GITHUB_TOKEN@github.com/msgoat/$CNJ_ARTIFACT_ID.git"
+      - git push origin HEAD:$VERSION_CHANGELIST $PROJECT_VERSION
   post_build:
     commands:
       - echo "Running phase post_build"
